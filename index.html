@@ -5,10 +5,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Subida Rápida de Material</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@700&display=swap"
     rel="stylesheet" />
+
   <style>
     :root {
       --bg: #0f1117;
@@ -43,7 +45,6 @@
       padding: 32px 16px 60px;
     }
 
-    /* layout 3 columnas: logo | card | logo */
     .page-layout {
       width: 100%;
       max-width: 940px;
@@ -83,7 +84,6 @@
       border-radius: 2px;
     }
 
-    /* en movil ocultar columnas laterales */
     @media (max-width: 700px) {
       .page-layout {
         grid-template-columns: 1fr;
@@ -196,14 +196,6 @@
       min-height: 72px;
     }
 
-    /* ── Fila de dos columnas (nota / puntos) ── */
-    .row-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-
-    /* ── Buscador con dropdown (reutilizable) ── */
     .search-wrap {
       position: relative;
     }
@@ -291,7 +283,6 @@
       font-size: 13px;
     }
 
-    /* ── Chip seleccionado ── */
     .selected-chip {
       display: none;
       align-items: center;
@@ -345,7 +336,6 @@
       object-fit: cover;
     }
 
-    /* ── Docente deshabilitado ── */
     .docente-disabled {
       display: flex;
       align-items: center;
@@ -360,7 +350,6 @@
       cursor: not-allowed;
     }
 
-    /* ── File drop ── */
     .file-drop {
       border: 2px dashed var(--border);
       border-radius: var(--radius);
@@ -434,7 +423,6 @@
       white-space: nowrap;
     }
 
-    /* ── Errores ── */
     .field-error {
       color: var(--error);
       font-size: 12px;
@@ -446,7 +434,6 @@
       display: block;
     }
 
-    /* ── Toast ── */
     #toast {
       position: fixed;
       bottom: 24px;
@@ -480,7 +467,6 @@
       color: var(--error);
     }
 
-    /* ── Botón ── */
     .btn-submit {
       width: 100%;
       padding: 13px;
@@ -552,11 +538,16 @@
       border-color: var(--border);
     }
 
-    /* ── Hint de campos opcionales ── */
     .optional-hint {
       font-size: 11px;
       color: var(--muted);
-      margin-top: 4px;
+      margin-top: 5px;
+      line-height: 1.45;
+    }
+
+    .optional-hint strong {
+      color: var(--accent);
+      font-weight: 700;
     }
 
     header {
@@ -567,9 +558,8 @@
 
 <body>
 
-  <header><!-- oculto --></header>
+  <header></header>
 
-  <!-- Header compact -->
   <div style="width:100%;max-width:820px;margin-bottom:18px;display:flex;align-items:center;gap:14px;padding:0 4px">
     <img src="https://pub-7fb8a7774afc41f3a60ff64137c9e489.r2.dev/prueba/icon.jpg"
       style="width:40px;height:40px;border-radius:9px;object-fit:contain;background:#fff;padding:3px;box-shadow:0 2px 10px rgba(0,0,0,.4)"
@@ -577,16 +567,16 @@
     <div>
       <div
         style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:1px">
-        Aprueba FNI</div>
-      <div style="font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700;color:var(--text)">Subida Rápida
-        de Material</div>
+        Aprueba FNI
+      </div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700;color:var(--text)">
+        Subida Rápida de Material
+      </div>
     </div>
   </div>
 
-  <!-- Layout 3 columnas -->
   <div class="page-layout">
 
-    <!-- COLUMNA IZQUIERDA -->
     <div class="side-col">
       <img class="side-logo" src="https://pub-7fb8a7774afc41f3a60ff64137c9e489.r2.dev/prueba/fni.png" alt="FNI"
         title="FNI" onerror="this.style.display='none'" />
@@ -595,19 +585,19 @@
         title="FNI Kawai" onerror="this.style.display='none'" />
     </div>
 
-    <!-- COLUMNA CENTRAL: el card -->
     <div class="card">
 
-      <!-- ID USUARIO -->
       <div class="field">
         <label for="idUsuario">ID de Usuario</label>
-        <input type="number" id="idUsuario" placeholder="Ej: 42" min="1" />
+        <input type="number" id="idUsuario" value="10" placeholder="Ej: 10" min="1" />
+        <div class="optional-hint">
+          Estos materiales que se suban serán registrados en nombre de <strong>SHOT</strong>.
+        </div>
         <div class="field-error" id="err-usuario"></div>
       </div>
 
       <hr class="divider" />
 
-      <!-- BUSCAR MATERIA -->
       <div class="field">
         <label>Materia</label>
         <div class="search-wrap">
@@ -620,17 +610,18 @@
           </span>
           <div class="dropdown" id="materiaDropdown"></div>
         </div>
+
         <div class="selected-chip" id="materiaChip">
           <span id="materiaChipText"></span>
-          <button class="chip-clear" id="materiaClear" title="Cambiar materia">✕</button>
+          <button class="chip-clear" id="materiaClear" title="Cambiar materia" type="button">✕</button>
         </div>
+
         <div class="field-error" id="err-materia"></div>
       </div>
 
-      <!-- DOCENTE -->
       <div class="field">
         <label>Docente</label>
-        <!-- Estado deshabilitado (antes de seleccionar materia) -->
+
         <div class="docente-disabled" id="docenteDisabled">
           <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <circle cx="11" cy="11" r="8" />
@@ -638,11 +629,12 @@
           </svg>
           Primero selecciona una materia
         </div>
-        <!-- Buscador activo (después de seleccionar materia) -->
+
         <div id="docenteBuscador" style="display:none">
           <div class="loading-row" id="docentesLoading">
             <span class="spinner"></span> Cargando docentes…
           </div>
+
           <div class="search-wrap" id="docenteSearchWrap" style="display:none">
             <input type="text" id="docenteSearch" placeholder="Buscar docente…" autocomplete="off" />
             <span class="search-icon">
@@ -654,69 +646,74 @@
             <div class="dropdown" id="docenteDropdown"></div>
           </div>
         </div>
+
         <div class="selected-chip" id="docenteChip">
           <div class="chip-avatar" id="docenteChipAvatar"></div>
           <span id="docenteChipText"></span>
-          <button class="chip-clear" id="docenteClear" title="Cambiar docente">✕</button>
+          <button class="chip-clear" id="docenteClear" title="Cambiar docente" type="button">✕</button>
         </div>
+
         <div class="field-error" id="err-docente"></div>
       </div>
 
       <hr class="divider" />
 
-      <!-- TÍTULO -->
       <div class="field">
         <label for="titulo">Título</label>
         <input type="text" id="titulo" placeholder="Ej: Parcial 1 — 2024" maxlength="100" />
         <div class="field-error" id="err-titulo"></div>
       </div>
 
-      <!-- DESCRIPCIÓN -->
       <div class="field">
-        <label for="descripcion">Descripción <span
-            style="color:var(--muted);font-weight:400;text-transform:none">(opcional)</span></label>
+        <label for="descripcion">
+          Descripción
+          <span style="color:var(--muted);font-weight:400;text-transform:none">(opcional)</span>
+        </label>
         <textarea id="descripcion" placeholder="Notas, contexto, semestre…"></textarea>
       </div>
 
-      <!-- NOTA Y PUNTOS -->
-      <div class="row-2">
-        <div class="field">
-          <label for="nota">Nota <span
-              style="color:var(--muted);font-weight:400;text-transform:none">(opcional)</span></label>
-          <input type="number" id="nota" placeholder="Ej: 85" min="0" step="0.1" />
-          <div class="field-error" id="err-nota"></div>
+      <div class="field">
+        <label for="puntos">
+          Puntos
+          <span style="color:var(--muted);font-weight:400;text-transform:none">(opcional)</span>
+        </label>
+        <input type="number" id="puntos" placeholder="Ej: 10" min="0" max="100" step="1" />
+        <div class="optional-hint">
+          Recomendación: 5 pts = material resuelto básico, 10 pts = material premium,
+          50 pts = material muy completo o guía extensa. Se recomienda no pasar de 100 pts.
         </div>
-        <div class="field">
-          <label for="puntos">Puntos <span
-              style="color:var(--muted);font-weight:400;text-transform:none">(opcional)</span></label>
-          <input type="number" id="puntos" placeholder="Ej: 100" min="0" step="1" />
-          <div class="field-error" id="err-puntos"></div>
-        </div>
+        <div class="field-error" id="err-puntos"></div>
       </div>
 
-      <!-- ARCHIVO -->
       <div class="field">
         <label>Archivo</label>
+
         <div class="file-drop" id="fileDrop">
           <input type="file" id="archivoInput" accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.zip,.xls,.xlsx" />
           <div class="file-drop-icon">📎</div>
-          <div class="file-drop-text"><strong>Selecciona</strong> o arrastra un archivo aquí</div>
-          <div class="file-drop-hint">PDF, DOC, DOCX, XLS, XLSX, ZIP, JPG, PNG, GIF — máx. 20 MB</div>
+          <div class="file-drop-text">
+            <strong>Selecciona</strong> o arrastra un archivo aquí
+          </div>
+          <div class="file-drop-hint">
+            PDF, DOC, DOCX, XLS, XLSX, ZIP, JPG, PNG, GIF — máx. 20 MB
+          </div>
         </div>
+
         <div class="file-chosen" id="fileChosen">
           <span>📄</span>
           <span class="fname" id="fileName"></span>
           <span class="fsize" id="fileSize"></span>
         </div>
+
         <div class="field-error" id="err-archivo"></div>
       </div>
 
-      <button class="btn-submit" id="btnSubmit" disabled>Subir Material</button>
+      <button class="btn-submit" id="btnSubmit" disabled type="button">
+        Subir Material
+      </button>
 
     </div>
 
-
-    <!-- COLUMNA DERECHA -->
     <div class="side-col">
       <img class="side-logo" src="https://pub-7fb8a7774afc41f3a60ff64137c9e489.r2.dev/prueba/shot.png" alt="SHOT"
         title="SHOT" onerror="this.style.display='none'" />
@@ -725,42 +722,58 @@
         title="Kawai" onerror="this.style.display='none'" />
     </div>
 
-  </div><!-- /page-layout -->
+  </div>
+
   <div id="toast"></div>
 
   <script>
-    // ─────────────────────────────────────────────────────────
-    // ⚙️  CONFIGURACIÓN — cambia esto antes de usar en producción
-    // ─────────────────────────────────────────────────────────
     const API_BASE = 'https://simulacrouniversitario.com/api';
-    // Producción → const API_BASE = 'https://tu-backend.com';
-    // ─────────────────────────────────────────────────────────
 
     const MIME_PERMITIDOS = [
-      'image/jpeg', 'image/png', 'image/gif',
-      'application/pdf', 'application/msword',
+      'image/jpeg',
+      'image/png',
+      'image/gif',
+      'application/pdf',
+      'application/msword',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'application/zip', 'application/vnd.ms-excel',
+      'application/zip',
+      'application/x-zip-compressed',
+      'application/vnd.ms-excel',
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     ];
-    const MAX_SIZE = 20 * 1024 * 1024;
 
-    // ── Estado ────────────────────────────────────────────────
+    const EXTENSIONES_PERMITIDAS = [
+      'jpg',
+      'jpeg',
+      'png',
+      'gif',
+      'pdf',
+      'doc',
+      'docx',
+      'zip',
+      'xls',
+      'xlsx',
+    ];
+
+    const MAX_SIZE = 20 * 1024 * 1024;
+    const ID_USUARIO_DEFAULT = 10;
+
     let state = {
       materiaSeleccionada: null,
       docenteSeleccionado: null,
-      todosLosDocentes: [],   // cache de docentes de la materia actual
+      todosLosDocentes: [],
       archivo: null,
     };
 
-    // ── Elementos ─────────────────────────────────────────────
     const $ = id => document.getElementById(id);
+
     const idUsuarioEl = $('idUsuario');
     const materiaSearchEl = $('materiaSearch');
     const materiaDropdown = $('materiaDropdown');
     const materiaChip = $('materiaChip');
     const materiaChipText = $('materiaChipText');
     const materiaClear = $('materiaClear');
+
     const docenteDisabled = $('docenteDisabled');
     const docenteBuscador = $('docenteBuscador');
     const docentesLoading = $('docentesLoading');
@@ -771,40 +784,55 @@
     const docenteChipText = $('docenteChipText');
     const docenteChipAvatar = $('docenteChipAvatar');
     const docenteClear = $('docenteClear');
+
     const tituloEl = $('titulo');
     const descripcionEl = $('descripcion');
-    const notaEl = $('nota');
     const puntosEl = $('puntos');
+
     const archivoInput = $('archivoInput');
     const fileDrop = $('fileDrop');
     const fileChosen = $('fileChosen');
     const fileNameEl = $('fileName');
     const fileSizeEl = $('fileSize');
+
     const btnSubmit = $('btnSubmit');
     const toastEl = $('toast');
 
-    // ── Utilidades ────────────────────────────────────────────
-    let debounceMateria, debounceDocente;
+    let debounceMateria;
+    let toastTimer;
 
-    function formatBytes(b) {
-      if (b < 1024) return b + ' B';
-      if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
-      return (b / 1048576).toFixed(1) + ' MB';
+    function formatBytes(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / 1048576).toFixed(1) + ' MB';
+    }
+
+    function getExtension(filename) {
+      return filename.split('.').pop().toLowerCase();
+    }
+
+    function archivoPermitido(file) {
+      const extension = getExtension(file.name);
+      return MIME_PERMITIDOS.includes(file.type) || EXTENSIONES_PERMITIDAS.includes(extension);
     }
 
     function showError(id, msg) {
       const el = $(id);
       if (!el) return;
+
       el.textContent = msg;
-      el.classList.toggle('visible', !!msg);
+      el.classList.toggle('visible', Boolean(msg));
     }
 
-    let toastTimer;
     function showToast(msg, type = 'error') {
       toastEl.textContent = msg;
       toastEl.className = `show ${type}`;
+
       clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toastEl.className = '', 4000);
+
+      toastTimer = setTimeout(() => {
+        toastEl.className = '';
+      }, 4000);
     }
 
     function checkSubmitReady() {
@@ -821,39 +849,61 @@
       return ((nombres?.[0] || '') + (apellidos?.[0] || '')).toUpperCase();
     }
 
-    function avatarHtml(d, size = 28) {
-      const ini = iniciales(d.nombres, d.apellidos);
-      if (d.imagen) {
-        return `<div class="doc-avatar"><img src="${d.imagen}" alt="${ini}" onerror="this.parentElement.textContent='${ini}'"></div>`;
+    function avatarHtml(docente) {
+      const ini = iniciales(docente.nombres, docente.apellidos);
+
+      if (docente.imagen) {
+        return `
+          <div class="doc-avatar">
+            <img src="${docente.imagen}" alt="${ini}" onerror="this.parentElement.textContent='${ini}'">
+          </div>
+        `;
       }
+
       return `<div class="doc-avatar">${ini}</div>`;
     }
 
-    // ── MATERIA: buscador ─────────────────────────────────────
     materiaSearchEl.addEventListener('input', () => {
       const q = materiaSearchEl.value.trim();
-      if (!q) { materiaDropdown.classList.remove('open'); return; }
+
+      if (!q) {
+        materiaDropdown.classList.remove('open');
+        return;
+      }
+
       clearTimeout(debounceMateria);
-      debounceMateria = setTimeout(() => buscarMaterias(q), 300);
+
+      debounceMateria = setTimeout(() => {
+        buscarMaterias(q);
+      }, 300);
     });
 
     materiaSearchEl.addEventListener('focus', () => {
-      if (materiaDropdown.innerHTML && materiaSearchEl.value.trim())
+      if (materiaDropdown.innerHTML && materiaSearchEl.value.trim()) {
         materiaDropdown.classList.add('open');
+      }
     });
 
-    document.addEventListener('click', e => {
-      if (!e.target.closest('#materiaDropdown') && !e.target.closest('#materiaSearch'))
+    document.addEventListener('click', event => {
+      if (!event.target.closest('#materiaDropdown') && !event.target.closest('#materiaSearch')) {
         materiaDropdown.classList.remove('open');
-      if (!e.target.closest('#docenteDropdown') && !e.target.closest('#docenteSearch'))
+      }
+
+      if (!event.target.closest('#docenteDropdown') && !event.target.closest('#docenteSearch')) {
         docenteDropdown.classList.remove('open');
+      }
     });
 
     async function buscarMaterias(q) {
       try {
         const res = await fetch(`${API_BASE}/material/materias/buscar?q=${encodeURIComponent(q)}`);
-        if (!res.ok) throw new Error();
-        renderMateriaDropdown(await res.json());
+
+        if (!res.ok) {
+          throw new Error('No se pudieron buscar materias.');
+        }
+
+        const materias = await res.json();
+        renderMateriaDropdown(materias);
       } catch {
         materiaDropdown.innerHTML = '<div class="dropdown-empty">Error al buscar materias.</div>';
         materiaDropdown.classList.add('open');
@@ -861,44 +911,59 @@
     }
 
     function renderMateriaDropdown(items) {
-      if (!items.length) {
+      if (!Array.isArray(items) || !items.length) {
         materiaDropdown.innerHTML = '<div class="dropdown-empty">Sin resultados.</div>';
       } else {
-        materiaDropdown.innerHTML = items.map(m =>
-          `<div class="dropdown-item" data-id="${m.id}" data-nombre="${m.nombre}" data-sigla="${m.sigla}">
-          <span class="sigla">${m.sigla}</span>
-          <span>${m.nombre}</span>
-        </div>`
-        ).join('');
-        materiaDropdown.querySelectorAll('.dropdown-item').forEach(el =>
-          el.addEventListener('click', () => seleccionarMateria({
-            id: +el.dataset.id, nombre: el.dataset.nombre, sigla: el.dataset.sigla
-          }))
-        );
+        materiaDropdown.innerHTML = items.map(materia => `
+          <div 
+            class="dropdown-item" 
+            data-id="${materia.id}" 
+            data-nombre="${materia.nombre}" 
+            data-sigla="${materia.sigla}"
+          >
+            <span class="sigla">${materia.sigla}</span>
+            <span>${materia.nombre}</span>
+          </div>
+        `).join('');
+
+        materiaDropdown.querySelectorAll('.dropdown-item').forEach(item => {
+          item.addEventListener('click', () => {
+            seleccionarMateria({
+              id: Number(item.dataset.id),
+              nombre: item.dataset.nombre,
+              sigla: item.dataset.sigla,
+            });
+          });
+        });
       }
+
       materiaDropdown.classList.add('open');
     }
 
-    function seleccionarMateria(m) {
-      state.materiaSeleccionada = m;
+    function seleccionarMateria(materia) {
+      state.materiaSeleccionada = materia;
       state.docenteSeleccionado = null;
       state.todosLosDocentes = [];
+
       materiaSearchEl.value = '';
       materiaDropdown.classList.remove('open');
-      materiaChipText.textContent = `${m.sigla} — ${m.nombre}`;
+
+      materiaChipText.textContent = `${materia.sigla} — ${materia.nombre}`;
       materiaChip.classList.add('visible');
       materiaSearchEl.closest('.search-wrap').style.display = 'none';
+
       showError('err-materia', '');
-      // Resetear docente
+
       docenteChip.classList.remove('visible');
       docenteSearchEl.value = '';
       docenteDropdown.classList.remove('open');
       docenteDropdown.innerHTML = '';
-      // Mostrar sección docente y cargar
+
       docenteDisabled.style.display = 'none';
       docenteBuscador.style.display = 'block';
       docenteSearchWrap.style.display = 'none';
-      cargarDocentes(m.id);
+
+      cargarDocentes(materia.id);
       checkSubmitReady();
     }
 
@@ -906,28 +971,41 @@
       state.materiaSeleccionada = null;
       state.docenteSeleccionado = null;
       state.todosLosDocentes = [];
+
       materiaChip.classList.remove('visible');
       materiaSearchEl.closest('.search-wrap').style.display = '';
       materiaSearchEl.value = '';
-      // Resetear docente a estado deshabilitado
+      materiaDropdown.classList.remove('open');
+
       docenteChip.classList.remove('visible');
       docenteBuscador.style.display = 'none';
       docenteDisabled.style.display = 'flex';
+      docenteSearchEl.value = '';
+      docenteDropdown.classList.remove('open');
+      docenteDropdown.innerHTML = '';
+
       checkSubmitReady();
     });
 
-    // ── DOCENTE: buscador ─────────────────────────────────────
     async function cargarDocentes(materiaId) {
       docentesLoading.classList.add('visible');
       docenteSearchWrap.style.display = 'none';
+
       try {
         const res = await fetch(`${API_BASE}/material/materias/${materiaId}/docentes`);
-        if (!res.ok) throw new Error();
-        const data = await res.json();
-        state.todosLosDocentes = data;
+
+        if (!res.ok) {
+          throw new Error('No se pudieron cargar docentes.');
+        }
+
+        const docentes = await res.json();
+
+        state.todosLosDocentes = Array.isArray(docentes) ? docentes : [];
+
         docentesLoading.classList.remove('visible');
         docenteSearchWrap.style.display = 'block';
-        renderDocenteDropdown(data);         // mostrar todos al inicio
+
+        renderDocenteDropdown(state.todosLosDocentes);
         docenteDropdown.classList.add('open');
       } catch {
         docentesLoading.classList.remove('visible');
@@ -939,155 +1017,279 @@
 
     docenteSearchEl.addEventListener('input', () => {
       const q = docenteSearchEl.value.trim().toLowerCase();
+
       const filtrados = q
-        ? state.todosLosDocentes.filter(d =>
-          `${d.nombres} ${d.apellidos}`.toLowerCase().includes(q))
+        ? state.todosLosDocentes.filter(docente =>
+          `${docente.nombres} ${docente.apellidos}`.toLowerCase().includes(q)
+        )
         : state.todosLosDocentes;
+
       renderDocenteDropdown(filtrados);
       docenteDropdown.classList.add('open');
     });
 
     docenteSearchEl.addEventListener('focus', () => {
       const q = docenteSearchEl.value.trim().toLowerCase();
+
       const filtrados = q
-        ? state.todosLosDocentes.filter(d =>
-          `${d.nombres} ${d.apellidos}`.toLowerCase().includes(q))
+        ? state.todosLosDocentes.filter(docente =>
+          `${docente.nombres} ${docente.apellidos}`.toLowerCase().includes(q)
+        )
         : state.todosLosDocentes;
+
       renderDocenteDropdown(filtrados);
       docenteDropdown.classList.add('open');
     });
 
     function renderDocenteDropdown(docentes) {
-      if (!docentes.length) {
+      if (!Array.isArray(docentes) || !docentes.length) {
         docenteDropdown.innerHTML = '<div class="dropdown-empty">Sin resultados.</div>';
-      } else {
-        docenteDropdown.innerHTML = docentes.map(d =>
-          `<div class="dropdown-item"
-          data-id="${d.id}"
-          data-nombres="${d.nombres}"
-          data-apellidos="${d.apellidos}"
-          data-imagen="${d.imagen || ''}">
-          ${avatarHtml(d)}
-          <span>${d.nombres} ${d.apellidos}</span>
-        </div>`
-        ).join('');
-        docenteDropdown.querySelectorAll('.dropdown-item').forEach(el =>
-          el.addEventListener('click', () => seleccionarDocente({
-            id: +el.dataset.id,
-            nombres: el.dataset.nombres,
-            apellidos: el.dataset.apellidos,
-            imagen: el.dataset.imagen,
-          }))
-        );
+        return;
       }
+
+      docenteDropdown.innerHTML = docentes.map(docente => `
+        <div 
+          class="dropdown-item"
+          data-id="${docente.id}"
+          data-nombres="${docente.nombres}"
+          data-apellidos="${docente.apellidos}"
+          data-imagen="${docente.imagen || ''}"
+        >
+          ${avatarHtml(docente)}
+          <span>${docente.nombres} ${docente.apellidos}</span>
+        </div>
+      `).join('');
+
+      docenteDropdown.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', () => {
+          seleccionarDocente({
+            id: Number(item.dataset.id),
+            nombres: item.dataset.nombres,
+            apellidos: item.dataset.apellidos,
+            imagen: item.dataset.imagen,
+          });
+        });
+      });
     }
 
-    function seleccionarDocente(d) {
-      state.docenteSeleccionado = d;
+    function seleccionarDocente(docente) {
+      state.docenteSeleccionado = docente;
+
       docenteSearchEl.value = '';
       docenteDropdown.classList.remove('open');
-      // Chip
-      const ini = iniciales(d.nombres, d.apellidos);
-      docenteChipAvatar.innerHTML = d.imagen
-        ? `<img src="${d.imagen}" alt="${ini}" onerror="this.parentElement.textContent='${ini}'">`
+
+      const ini = iniciales(docente.nombres, docente.apellidos);
+
+      docenteChipAvatar.innerHTML = docente.imagen
+        ? `<img src="${docente.imagen}" alt="${ini}" onerror="this.parentElement.textContent='${ini}'">`
         : ini;
-      docenteChipText.textContent = `${d.nombres} ${d.apellidos}`;
+
+      docenteChipText.textContent = `${docente.nombres} ${docente.apellidos}`;
       docenteChip.classList.add('visible');
       docenteSearchWrap.style.display = 'none';
+
       showError('err-docente', '');
       checkSubmitReady();
     }
 
     docenteClear.addEventListener('click', () => {
       state.docenteSeleccionado = null;
+
       docenteChip.classList.remove('visible');
       docenteSearchWrap.style.display = 'block';
       docenteSearchEl.value = '';
+
       renderDocenteDropdown(state.todosLosDocentes);
       docenteDropdown.classList.add('open');
+
       checkSubmitReady();
     });
 
-    // ── Archivo ───────────────────────────────────────────────
-    archivoInput.addEventListener('change', () => procesarArchivo(archivoInput.files[0]));
-    fileDrop.addEventListener('dragover', e => { e.preventDefault(); fileDrop.classList.add('drag-over'); });
-    fileDrop.addEventListener('dragleave', () => fileDrop.classList.remove('drag-over'));
-    fileDrop.addEventListener('drop', e => {
-      e.preventDefault(); fileDrop.classList.remove('drag-over');
-      procesarArchivo(e.dataTransfer.files[0]);
+    archivoInput.addEventListener('change', () => {
+      procesarArchivo(archivoInput.files[0]);
+    });
+
+    fileDrop.addEventListener('dragover', event => {
+      event.preventDefault();
+      fileDrop.classList.add('drag-over');
+    });
+
+    fileDrop.addEventListener('dragleave', () => {
+      fileDrop.classList.remove('drag-over');
+    });
+
+    fileDrop.addEventListener('drop', event => {
+      event.preventDefault();
+      fileDrop.classList.remove('drag-over');
+
+      procesarArchivo(event.dataTransfer.files[0]);
     });
 
     function procesarArchivo(file) {
       if (!file) return;
-      if (!MIME_PERMITIDOS.includes(file.type)) {
+
+      if (!archivoPermitido(file)) {
         showError('err-archivo', 'Tipo no permitido. Usa PDF, DOC, DOCX, XLS, XLSX, ZIP, JPG, PNG o GIF.');
-        state.archivo = null; checkSubmitReady(); return;
+        state.archivo = null;
+        archivoInput.value = '';
+        fileChosen.classList.remove('visible');
+        checkSubmitReady();
+        return;
       }
+
       if (file.size > MAX_SIZE) {
         showError('err-archivo', `El archivo pesa ${formatBytes(file.size)}. Máximo 20 MB.`);
-        state.archivo = null; checkSubmitReady(); return;
+        state.archivo = null;
+        archivoInput.value = '';
+        fileChosen.classList.remove('visible');
+        checkSubmitReady();
+        return;
       }
+
       state.archivo = file;
+
       fileNameEl.textContent = file.name;
       fileSizeEl.textContent = formatBytes(file.size);
       fileChosen.classList.add('visible');
+
       showError('err-archivo', '');
       checkSubmitReady();
     }
 
-    // ── Validaciones en tiempo real ───────────────────────────
-    [idUsuarioEl, tituloEl].forEach(el => el.addEventListener('input', checkSubmitReady));
+    [idUsuarioEl, tituloEl].forEach(input => {
+      input.addEventListener('input', checkSubmitReady);
+    });
 
-    // ── Submit ────────────────────────────────────────────────
+    puntosEl.addEventListener('input', () => {
+      const value = puntosEl.value.trim();
+
+      if (value === '') {
+        showError('err-puntos', '');
+        return;
+      }
+
+      const puntos = Number(value);
+
+      if (Number.isNaN(puntos) || puntos < 0) {
+        showError('err-puntos', 'Ingresa un número válido.');
+      } else if (puntos > 100) {
+        showError('err-puntos', 'Se recomienda usar máximo 100 puntos.');
+      } else {
+        showError('err-puntos', '');
+      }
+    });
+
     btnSubmit.addEventListener('click', async () => {
       let ok = true;
-      const idVal = parseInt(idUsuarioEl.value);
-      if (!idVal || idVal < 1) { showError('err-usuario', 'Ingresa un ID válido.'); ok = false; }
-      if (!state.materiaSeleccionada) { showError('err-materia', 'Selecciona una materia.'); ok = false; }
-      if (!state.docenteSeleccionado) { showError('err-docente', 'Selecciona un docente.'); ok = false; }
-      if (tituloEl.value.trim().length < 3) { showError('err-titulo', 'Mínimo 3 caracteres.'); ok = false; }
-      if (!state.archivo) { showError('err-archivo', 'Selecciona un archivo.'); ok = false; }
 
-      // Validar nota y puntos si tienen valor
-      const notaVal = notaEl.value.trim();
+      const idVal = parseInt(idUsuarioEl.value, 10);
+      const tituloVal = tituloEl.value.trim();
+      const descripcionVal = descripcionEl.value.trim();
       const puntosVal = puntosEl.value.trim();
-      if (notaVal !== '' && (isNaN(+notaVal) || +notaVal < 0)) {
-        showError('err-nota', 'Ingresa un número válido.'); ok = false;
+
+      if (!idVal || idVal < 1) {
+        showError('err-usuario', 'Ingresa un ID válido.');
+        ok = false;
+      } else {
+        showError('err-usuario', '');
       }
-      if (puntosVal !== '' && (isNaN(+puntosVal) || +puntosVal < 0)) {
-        showError('err-puntos', 'Ingresa un número válido.'); ok = false;
+
+      if (!state.materiaSeleccionada) {
+        showError('err-materia', 'Selecciona una materia.');
+        ok = false;
+      } else {
+        showError('err-materia', '');
       }
+
+      if (!state.docenteSeleccionado) {
+        showError('err-docente', 'Selecciona un docente.');
+        ok = false;
+      } else {
+        showError('err-docente', '');
+      }
+
+      if (tituloVal.length < 3) {
+        showError('err-titulo', 'Mínimo 3 caracteres.');
+        ok = false;
+      } else {
+        showError('err-titulo', '');
+      }
+
+      if (!state.archivo) {
+        showError('err-archivo', 'Selecciona un archivo.');
+        ok = false;
+      } else {
+        showError('err-archivo', '');
+      }
+
+      if (puntosVal !== '') {
+        const puntosNum = Number(puntosVal);
+
+        if (Number.isNaN(puntosNum) || puntosNum < 0) {
+          showError('err-puntos', 'Ingresa un número válido.');
+          ok = false;
+        } else if (puntosNum > 100) {
+          showError('err-puntos', 'Se recomienda usar máximo 100 puntos.');
+          ok = false;
+        } else {
+          showError('err-puntos', '');
+        }
+      } else {
+        showError('err-puntos', '');
+      }
+
       if (!ok) return;
 
       const formData = new FormData();
+
       formData.append('idUsuario', String(idVal));
       formData.append('materiaId', String(state.materiaSeleccionada.id));
       formData.append('educadorId', String(state.docenteSeleccionado.id));
-      formData.append('titulo', tituloEl.value.trim());
-      formData.append('descripcion', descripcionEl.value.trim());
-      if (notaVal !== '') formData.append('nota', notaVal);
-      if (puntosVal !== '') formData.append('puntos', puntosVal);
+      formData.append('titulo', tituloVal);
+      formData.append('descripcion', descripcionVal);
+
+      if (puntosVal !== '') {
+        formData.append('puntos', puntosVal);
+      }
+
       formData.append('archivo', state.archivo);
 
       btnSubmit.disabled = true;
       btnSubmit.innerHTML = '<span class="spinner"></span>Subiendo…';
 
       try {
-        const res = await fetch(`${API_BASE}/material`, { method: 'POST', body: formData });
+        const res = await fetch(`${API_BASE}/material`, {
+          method: 'POST',
+          body: formData,
+        });
+
         const json = await res.json();
 
         if (!res.ok) {
           const msg = json.message || 'Error al subir el material.';
-          if (msg.includes('usuario')) showError('err-usuario', msg);
-          else if (msg.includes('materia')) showError('err-materia', msg);
-          else if (msg.includes('educador') || msg.includes('dicta')) showError('err-docente', msg);
-          else if (msg.includes('archivo')) showError('err-archivo', msg);
-          else showToast(msg, 'error');
+
+          if (msg.toLowerCase().includes('usuario')) {
+            showError('err-usuario', msg);
+          } else if (msg.toLowerCase().includes('materia')) {
+            showError('err-materia', msg);
+          } else if (
+            msg.toLowerCase().includes('educador') ||
+            msg.toLowerCase().includes('docente') ||
+            msg.toLowerCase().includes('dicta')
+          ) {
+            showError('err-docente', msg);
+          } else if (msg.toLowerCase().includes('archivo')) {
+            showError('err-archivo', msg);
+          } else {
+            showToast(msg, 'error');
+          }
+
           return;
         }
 
-        showToast(`✓ "${json.titulo}" subido correctamente.`, 'success');
-        resetForm();
+        showToast(`✓ "${json.titulo || tituloVal}" subido correctamente.`, 'success');
+
+        resetFormAfterUpload();
       } catch {
         showToast('No se pudo conectar con el servidor.', 'error');
       } finally {
@@ -1096,24 +1298,76 @@
       }
     });
 
-    // ── Reset ─────────────────────────────────────────────────
+    function resetFormAfterUpload() {
+      tituloEl.value = '';
+      descripcionEl.value = '';
+      puntosEl.value = '';
+
+      archivoInput.value = '';
+      fileChosen.classList.remove('visible');
+      fileNameEl.textContent = '';
+      fileSizeEl.textContent = '';
+
+      state.archivo = null;
+
+      [
+        'err-usuario',
+        'err-materia',
+        'err-docente',
+        'err-titulo',
+        'err-archivo',
+        'err-puntos',
+      ].forEach(id => showError(id, ''));
+
+      checkSubmitReady();
+    }
+
     function resetForm() {
-      idUsuarioEl.value = '';
-      materiaSearchEl.value = ''; materiaSearchEl.closest('.search-wrap').style.display = '';
+      idUsuarioEl.value = String(ID_USUARIO_DEFAULT);
+
+      materiaSearchEl.value = '';
+      materiaSearchEl.closest('.search-wrap').style.display = '';
       materiaChip.classList.remove('visible');
       materiaDropdown.classList.remove('open');
+      materiaDropdown.innerHTML = '';
+
       docenteChip.classList.remove('visible');
       docenteBuscador.style.display = 'none';
       docenteDisabled.style.display = 'flex';
-      docenteSearchEl.value = ''; docenteDropdown.classList.remove('open');
-      tituloEl.value = ''; descripcionEl.value = '';
-      notaEl.value = ''; puntosEl.value = '';
-      archivoInput.value = ''; fileChosen.classList.remove('visible');
-      state = { materiaSeleccionada: null, docenteSeleccionado: null, todosLosDocentes: [], archivo: null };
-      ['err-usuario', 'err-materia', 'err-docente', 'err-titulo', 'err-archivo', 'err-nota', 'err-puntos']
-        .forEach(id => showError(id, ''));
+      docenteSearchEl.value = '';
+      docenteDropdown.classList.remove('open');
+      docenteDropdown.innerHTML = '';
+
+      tituloEl.value = '';
+      descripcionEl.value = '';
+      puntosEl.value = '';
+
+      archivoInput.value = '';
+      fileChosen.classList.remove('visible');
+      fileNameEl.textContent = '';
+      fileSizeEl.textContent = '';
+
+      state = {
+        materiaSeleccionada: null,
+        docenteSeleccionado: null,
+        todosLosDocentes: [],
+        archivo: null,
+      };
+
+      [
+        'err-usuario',
+        'err-materia',
+        'err-docente',
+        'err-titulo',
+        'err-archivo',
+        'err-puntos',
+      ].forEach(id => showError(id, ''));
+
       checkSubmitReady();
     }
+
+    idUsuarioEl.value = idUsuarioEl.value || String(ID_USUARIO_DEFAULT);
+    checkSubmitReady();
   </script>
 </body>
 
